@@ -1,0 +1,1211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>E-Games Tournament — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --neon:   #00f5d4;
+    --neon2:  #f72585;
+    --neon3:  #fee440;
+    --dark:   #03020a;
+    --dark2:  #0d0b1e;
+    --card:   rgba(255,255,255,0.04);
+    --border: rgba(0,245,212,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--dark);
+    font-family: 'Rajdhani', sans-serif;
+    color: #e0e0ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,212,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 1; }
+  }
+
+  /* SCANLINES */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* PARTICLES */
+  .particle {
+    position: fixed;
+    width: 2px; height: 2px;
+    background: var(--neon);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatUp linear infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh) translateX(0); opacity: 0.5; }
+    to   { transform: translateY(-100px) translateX(40px); opacity: 0; }
+  }
+
+  /* ==============================
+     NAV
+  ============================== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(3,2,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, #fff, var(--neon));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(224,224,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--neon); }
+
+  .nav-register {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--neon);
+    text-decoration: none;
+    border: 1px solid var(--neon);
+    padding: 8px 20px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .nav-register:hover {
+    background: rgba(0,245,212,0.1);
+    box-shadow: 0 0 20px rgba(0,245,212,0.2);
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+  }
+
+  /* ==============================
+     SECTIONS WRAPPER
+  ============================== */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ==============================
+     HERO
+  ============================== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+  }
+
+  .hero-content { max-width: 760px; }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    padding: 6px 20px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--neon);
+    opacity: 0;
+    animation: badgePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { opacity: 0; }
+    50%       { opacity: 0.08; }
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(36px, 8vw, 80px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 20%, var(--neon) 60%, var(--neon2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(224,224,255,0.5);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+
+  /* Countdown */
+  .countdown-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.3s ease both;
+    flex-wrap: wrap;
+  }
+
+  .cd-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    min-width: 72px;
+    position: relative;
+  }
+
+  .cd-block::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  }
+
+  .cd-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--neon);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(0,245,212,0.4);
+  }
+
+  .cd-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(224,224,255,0.35);
+    margin-top: 6px;
+  }
+
+  .cd-sep {
+    font-family: 'Orbitron', monospace;
+    font-size: 24px;
+    color: var(--neon);
+    opacity: 0.3;
+    align-self: center;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 0; } }
+
+  /* Hero buttons */
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--neon2) 0%, #7b2ff7 50%, var(--neon) 100%);
+    background-size: 200% 200%;
+    animation: btnGradient 4s ease infinite;
+    color: #fff;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    transition: transform 0.15s, box-shadow 0.3s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(0,245,212,0.3), 0 0 0 1px var(--neon);
+  }
+
+  @keyframes btnGradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 1px solid rgba(0,245,212,0.35);
+    color: var(--neon);
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(0,245,212,0.07);
+    box-shadow: 0 0 24px rgba(0,245,212,0.15);
+  }
+
+  /* Date + venue strip */
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .meta-icon {
+    font-size: 18px;
+    opacity: 0.7;
+  }
+
+  .meta-text {
+    text-align: left;
+  }
+
+  .meta-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--neon);
+    opacity: 0.6;
+    margin-bottom: 2px;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #e0e0ff;
+  }
+
+  /* ==============================
+     GLITCH BAR (divider)
+  ============================== */
+  .glitch-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 56px;
+  }
+
+  .glitch-bar span {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  }
+
+  .glitch-bar em {
+    font-style: normal;
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--neon);
+    opacity: 0.7;
+  }
+
+  /* ==============================
+     EVENTS SECTION
+  ============================== */
+  #events { padding: 100px 0; }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #fff 40%, var(--neon) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(224,224,255,0.4);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .events-grid { grid-template-columns: 1fr; }
+  }
+
+  .event-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+
+  .event-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .event-card.militia::before  { background: linear-gradient(90deg, var(--neon2), var(--neon)); }
+  .event-card.efootball::before { background: linear-gradient(90deg, var(--neon), var(--neon3)); }
+  .event-card.bgmi::before     { background: linear-gradient(90deg, var(--neon3), var(--neon2)); }
+
+  /* bottom-right corner */
+  .event-card::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 28px; height: 28px;
+    border-bottom: 2px solid var(--neon);
+    border-right: 2px solid var(--neon);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+
+  .event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,245,212,0.1);
+    border-color: rgba(0,245,212,0.35);
+  }
+
+  .event-card:hover::after { opacity: 1; }
+
+  .event-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .event-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .event-type {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .event-card.militia  .event-type { color: var(--neon2); }
+  .event-card.efootball .event-type { color: var(--neon); }
+  .event-card.bgmi     .event-type { color: var(--neon3); }
+
+  .event-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 20px;
+  }
+
+  .event-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .event-stat-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(224,224,255,0.35);
+  }
+
+  .event-stat-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .event-card.militia  .event-stat-value { color: var(--neon2); }
+  .event-card.efootball .event-stat-value { color: var(--neon); }
+  .event-card.bgmi     .event-stat-value { color: var(--neon3); }
+
+  /* ==============================
+     HOW TO JOIN
+  ============================== */
+  #howto { padding: 100px 0; }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px 22px;
+    position: relative;
+    text-align: center;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon2), transparent);
+  }
+
+  .step-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 36px;
+    font-weight: 900;
+    color: rgba(0,245,212,0.1);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .step-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .step-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--neon);
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(224,224,255,0.5);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+  }
+
+  /* connector line between steps */
+  .steps-grid .step-card:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: rgba(0,245,212,0.25);
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .steps-grid .step-card::after { display: none; }
+  }
+
+  /* ==============================
+     RULES SECTION
+  ============================== */
+  #rules { padding: 100px 0; }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .rules-grid { grid-template-columns: 1fr; }
+  }
+
+  .rules-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  .rules-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .rules-card.militia::before  { background: var(--neon2); }
+  .rules-card.efootball::before { background: var(--neon); }
+  .rules-card.bgmi::before     { background: var(--neon3); }
+
+  .rules-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rules-card.militia  .rules-title { color: var(--neon2); }
+  .rules-card.efootball .rules-title { color: var(--neon); }
+  .rules-card.bgmi     .rules-title { color: var(--neon3); }
+
+  .rules-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rules-list li {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(224,224,255,0.6);
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .rules-list li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--neon);
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  /* ==============================
+     CONTACT SECTION
+  ============================== */
+  #contact { padding: 100px 0 120px; }
+
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .contact-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon2), var(--neon), var(--neon3));
+  }
+
+  .contact-card::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 32px; height: 32px;
+    border-bottom: 2px solid var(--neon);
+    border-right: 2px solid var(--neon);
+  }
+
+  .contact-left .contact-heading {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(16px, 3vw, 24px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .contact-left p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(224,224,255,0.45);
+    letter-spacing: 1px;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,245,212,0.04);
+    border: 1px dashed rgba(0,245,212,0.18);
+    padding: 12px 18px;
+  }
+
+  .contact-item-icon { font-size: 16px; flex-shrink: 0; }
+
+  .contact-item-text .ci-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--neon);
+    opacity: 0.6;
+    margin-bottom: 2px;
+  }
+
+  .contact-item-text .ci-value {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #e0e0ff;
+  }
+
+  /* ==============================
+     FOOTER
+  ============================== */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, #fff, var(--neon));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-text {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(224,224,255,0.2);
+  }
+
+  /* ==============================
+     ANIMATIONS
+  ============================== */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div class="particle" style="left:5%;  animation-duration:14s; animation-delay:0s;"></div>
+<div class="particle" style="left:18%; animation-duration:20s; animation-delay:4s;  background:var(--neon2);"></div>
+<div class="particle" style="left:40%; animation-duration:11s; animation-delay:2s;"></div>
+<div class="particle" style="left:62%; animation-duration:17s; animation-delay:7s;  background:var(--neon3);"></div>
+<div class="particle" style="left:80%; animation-duration:13s; animation-delay:1s;"></div>
+<div class="particle" style="left:93%; animation-duration:19s; animation-delay:5s;  background:var(--neon2);"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ E-GAMES-2026</div>
+  <ul class="nav-links">
+    <li><a href="#events">Events</a></li>
+    <li><a href="#howto">How To Join</a></li>
+    <li><a href="#rules">Rules</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="/register" class="nav-register">Register →</a>
+</nav>
+
+<!-- ==============================
+     HERO
+============================== -->
+<section id="hero">
+  <div class="hero-content">
+
+    <div class="hero-badge">MGM Technological Campus </div>
+
+    <h1 class="hero-title">⚡ E-GAMES<br>TOURNAMENT</h1>
+
+    <p class="hero-sub">Battle. Dominate. Conquer.</p>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-wrap">
+      <div class="cd-block">
+        <span class="cd-num" id="cd-days">00</span>
+        <span class="cd-label">Days</span>
+      </div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block">
+        <span class="cd-num" id="cd-hours">00</span>
+        <span class="cd-label">Hours</span>
+      </div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block">
+        <span class="cd-num" id="cd-mins">00</span>
+        <span class="cd-label">Mins</span>
+      </div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block">
+        <span class="cd-num" id="cd-secs">00</span>
+        <span class="cd-label">Secs</span>
+      </div>
+    </div>
+
+    <div class="hero-btns">
+      <a href="/register" class="btn-primary">Register Now →</a>
+      <a href="#events"   class="btn-secondary">View Events</a>
+    </div>
+
+    <!-- Date + Venue -->
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="meta-icon">📅</span>
+        <div class="meta-text">
+          <div class="meta-label">Event Date</div>
+          <!-- ✏️ REPLACE: e.g. March 25, 2025 -->
+          <div class="meta-value">12 March 2026</div>
+        </div>
+      </div>
+      <div class="hero-meta-item">
+        <span class="meta-icon">📍</span>
+        <div class="meta-text">
+          <div class="meta-label">Venue</div>
+          <!-- ✏️ REPLACE: e.g. Computer Lab, Block A -->
+          <div class="meta-value">MGM Technological Campus</div>
+        </div>
+      </div>
+      <div class="hero-meta-item">
+        <span class="meta-icon">🏆</span>
+        <div class="meta-text">
+          <div class="meta-label">Events</div>
+          <div class="meta-value">3 Categories</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==============================
+     EVENTS
+============================== -->
+<section id="events">
+  <div class="section-inner">
+    <div class="glitch-bar reveal">
+      <span></span><em>CHOOSE YOUR BATTLE</em><span></span>
+    </div>
+
+    <div class="reveal">
+      <div class="section-title">Events</div>
+      <div class="section-sub">Three battles. One champion.</div>
+    </div>
+
+    <div class="events-grid reveal">
+
+      <!-- Mini Militia -->
+      <div class="event-card militia">
+        <span class="event-icon">🔫</span>
+        <div class="event-name">Mini Militia</div>
+        <div class="event-type">Team · 4 Players</div>
+        <div class="event-divider"></div>
+        <div class="event-stat">
+          <span class="event-stat-label">Entry Fee</span>
+          <span class="event-stat-value">₹ 80 / team</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Format</span>
+          <span class="event-stat-value">Elimination</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Prize</span>
+          <!-- ✏️ REPLACE with actual prize -->
+          <span class="event-stat-value">TBA</span>
+        </div>
+      </div>
+
+      <!-- eFootball -->
+      <div class="event-card efootball">
+        <span class="event-icon">⚽</span>
+        <div class="event-name">eFootball</div>
+        <div class="event-type">Solo · 1v1</div>
+        <div class="event-divider"></div>
+        <div class="event-stat">
+          <span class="event-stat-label">Entry Fee</span>
+          <span class="event-stat-value">₹ 50 / player</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Format</span>
+          <span class="event-stat-value">Knockout</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Prize</span>
+          <!-- ✏️ REPLACE with actual prize -->
+          <span class="event-stat-value">TBA</span>
+        </div>
+      </div>
+
+      <!-- BGMI -->
+      <div class="event-card bgmi">
+        <span class="event-icon">🪖</span>
+        <div class="event-name">BGMI</div>
+        <div class="event-type">Team · 4 Players</div>
+        <div class="event-divider"></div>
+        <div class="event-stat">
+          <span class="event-stat-label">Entry Fee</span>
+          <span class="event-stat-value">₹ 100 / team</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Format</span>
+          <span class="event-stat-value">Battle Royale</span>
+        </div>
+        <div class="event-stat">
+          <span class="event-stat-label">Prize</span>
+          <!-- ✏️ REPLACE with actual prize -->
+          <span class="event-stat-value">TBA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     HOW TO JOIN
+============================== -->
+<section id="howto">
+  <div class="section-inner">
+    <div class="glitch-bar reveal">
+      <span></span><em>YOUR PATH TO GLORY</em><span></span>
+    </div>
+
+    <div class="reveal">
+      <div class="section-title">How To Join</div>
+      <div class="section-sub">Four steps to enter the arena</div>
+    </div>
+
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <span class="step-icon">📋</span>
+        <div class="step-title">Register</div>
+        <p class="step-desc">Fill out the registration form with your details and choose your event.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <span class="step-icon">💰</span>
+        <div class="step-title">Pay Fee</div>
+        <p class="step-desc">Pay the entry fee via UPI or cash and submit your transaction ID.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <span class="step-icon">📡</span>
+        <div class="step-title">Get Confirmed</div>
+        <p class="step-desc">Receive confirmation from coordinators with your match schedule.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <span class="step-icon">🎮</span>
+        <div class="step-title">Compete</div>
+        <p class="step-desc">Show up on event day, play your best, and claim the victory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     RULES
+============================== -->
+<section id="rules">
+  <div class="section-inner">
+    <div class="glitch-bar reveal">
+      <span></span><em>KNOW THE CODE</em><span></span>
+    </div>
+
+    <div class="reveal">
+      <div class="section-title">Rules</div>
+      <div class="section-sub">Play fair. Play hard.</div>
+    </div>
+
+    <div class="rules-grid reveal">
+
+      <div class="rules-card militia">
+        <div class="rules-title">🔫 Mini Militia</div>
+        <ul class="rules-list">
+          <!-- ✏️ REPLACE with actual rules -->
+          <li>Teams of 4 players only</li>
+          <li>No hacking or modded APKs allowed</li>
+          <li>Match format: best of 3 rounds</li>
+          <li>Players must bring their own device</li>
+          <li>Decision of organizers is final</li>
+        </ul>
+      </div>
+
+      <div class="rules-card efootball">
+        <div class="rules-title">⚽ eFootball</div>
+        <ul class="rules-list">
+          <!-- ✏️ REPLACE with actual rules -->
+          <li>Solo 1v1 matches only</li>
+          <li>10 minute matches, extra time if draw</li>
+          <li>Latest official game version required</li>
+          <li>Players must bring their own device</li>
+          <li>Decision of organizers is final</li>
+        </ul>
+      </div>
+
+      <div class="rules-card bgmi">
+        <div class="rules-title">🪖 BGMI</div>
+        <ul class="rules-list">
+          <!-- ✏️ REPLACE with actual rules -->
+          <li>Teams of 4 players only</li>
+          <li>No emulator or external peripherals</li>
+          <li>Custom room matches, Erangel map</li>
+          <li>Players must bring their own device</li>
+          <li>Decision of organizers is final</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CONTACT
+============================== -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="glitch-bar reveal">
+      <span></span><em>GET IN TOUCH</em><span></span>
+    </div>
+
+    <div class="contact-card reveal">
+      <div class="contact-left">
+        <div class="contact-heading">Have Questions?</div>
+        <p>Reach out to our event coordinators.</p>
+      </div>
+
+      <div class="contact-details">
+        <div class="contact-item">
+          <span class="contact-item-icon">👤</span>
+          <div class="contact-item-text">
+            <div class="ci-label">Coordinator</div>
+            <!-- ✏️ REPLACE with actual name -->
+            <div class="ci-value">Coordinator Name</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-icon">📞</span>
+          <div class="contact-item-text">
+            <div class="ci-label">Phone</div>
+            <!-- ✏️ REPLACE with actual number -->
+            <div class="ci-value">+91 XXXXX XXXXX</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-icon">✉️</span>
+          <div class="contact-item-text">
+            <div class="ci-label">Email</div>
+            <!-- ✏️ REPLACE with actual email -->
+            <div class="ci-value">email@mgm.edu.in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final CTA -->
+    <div style="text-align:center; margin-top: 60px;" class="reveal">
+      <p style="font-family:'Orbitron',monospace; font-size:9px; letter-spacing:3px; color:rgba(224,224,255,0.3); margin-bottom:24px; text-transform:uppercase;">Seats are limited — don't miss out</p>
+      <a href="/register" class="btn-primary" style="font-size:13px; padding:18px 48px;">
+        Register Now →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⚡ E-GAMES TOURNAMENT</div>
+  <div class="footer-text">MGM Technological Campus · Season 2025 · All rights reserved</div>
+</footer>
+
+<script>
+  // ── COUNTDOWN ──────────────────────────────
+  // ✏️ REPLACE this date with your actual event date/time
+  const eventDate = new Date("2025-03-25T09:00:00");
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = eventDate - now;
+
+    if (diff <= 0) {
+      document.getElementById("cd-days").textContent  = "00";
+      document.getElementById("cd-hours").textContent = "00";
+      document.getElementById("cd-mins").textContent  = "00";
+      document.getElementById("cd-secs").textContent  = "00";
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000)  / 60000);
+    const s = Math.floor((diff % 60000)    / 1000);
+
+    document.getElementById("cd-days").textContent  = String(d).padStart(2,"0");
+    document.getElementById("cd-hours").textContent = String(h).padStart(2,"0");
+    document.getElementById("cd-mins").textContent  = String(m).padStart(2,"0");
+    document.getElementById("cd-secs").textContent  = String(s).padStart(2,"0");
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ── SCROLL REVEAL ──────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add("visible");
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
