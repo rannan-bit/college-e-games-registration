@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-55hb$jfe+s4k7ucw4+3%bezcx)divy(bt2455l+mz0d6r37crr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-# Application definition
+ALLOWED_HOSTS = ['college-e-games-registration.onrender.com']# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
